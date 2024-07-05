@@ -18,7 +18,7 @@ contract Ownable {
 
     // Modifier: Only owner
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner can call this function");
+        require(msg.sender == owner, "Only owner can call this function Ownable");
         _;
     }
 

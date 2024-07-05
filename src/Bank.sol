@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
 
 // 定义 IBank 接口
 interface IBank {
     function withdraw(address user, uint256 amount) external;
 }
 
-contract Bank is ReentrancyGuard {
+contract Bank {
     // owner：合约部署者即为合约的所有者，拥有撤回资金的权限。
     address public owner;
     // balances：mapping 类型，用于存储每个地址的存款金额。
@@ -24,9 +24,8 @@ contract Bank is ReentrancyGuard {
         owner = msg.sender;
     }
 
-    // Modifier: Only owner
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner can call this function");
+        require(msg.sender == owner, "Only owner can call this function Bank");
         _;
     }
 
@@ -75,9 +74,7 @@ contract Bank is ReentrancyGuard {
     function sortTopUsers() internal {
         for (uint256 i = 0; i < topDepositUsers.length - 1; i++) {
             for (uint256 j = i + 1; j < topDepositUsers.length; j++) {
-                if (
-                    balances[topDepositUsers[i]] < balances[topDepositUsers[j]]
-                ) {
+                if (balances[topDepositUsers[i]] < balances[topDepositUsers[j]]) {
                     address tempUser = topDepositUsers[i];
                     topDepositUsers[i] = topDepositUsers[j];
                     topDepositUsers[j] = tempUser;

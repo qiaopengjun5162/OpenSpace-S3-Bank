@@ -4,7 +4,6 @@ pragma solidity ^0.8.20;
 import "./Bank.sol";
 
 contract BigBank is Bank {
-    address public newOwner;
 
     // Modifier: Deposit amount must be greater than 0.001 ether
     modifier onlyLargeDeposit() {
@@ -18,14 +17,15 @@ contract BigBank is Bank {
     }
 
     // Function to set a new owner (only current owner can call)
-    function transferOwnership(address _newOwner) public onlyOwner {
+    function transferOwnership(address _newOwner) public {
         require(_newOwner != address(0), "New owner is the zero address");
-        newOwner = _newOwner;
+        owner = _newOwner;
     }
 
     // 重写 withdraw 函数，使其只能由 newOwner 调用
     function withdraw(address user, uint256 amount) public override(Bank) {
-        require(msg.sender == newOwner, "Only new owner can call this function");
+        
+        require(msg.sender == owner, "Only new owner can call this function withdraw");
         super.withdraw(user, amount);
     }
 }
