@@ -113,25 +113,6 @@
 						"type": "uint256"
 					}
 				],
-				"name": "topDepositAmounts",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
 				"name": "topDepositUsers",
 				"outputs": [
 					{
@@ -145,6 +126,11 @@
 			},
 			{
 				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
 					{
 						"internalType": "uint256",
 						"name": "amount",
@@ -189,11 +175,11 @@
 	},
 	"sources": {
 		"src/Bank.sol": {
-			"keccak256": "0x59484341d4ca1be2d28ffd367b20cf81643a4d0c3aad5b4e5594f077e43aecbf",
+			"keccak256": "0xf0c53dd132882c19697da4db667388c3c30e000ba9487ce77f533fc4705b4f44",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://5744b77ad3f5a8998c3c14ea14866113600a9bbbac4c74c4479534d04916faa2",
-				"dweb:/ipfs/QmVdabaQqs5DTvvtL3AmHuZR5XaGXqwDnXWDBn6bQMMaTm"
+				"bzz-raw://9f227a9d97763725d7ed0a029c3afa0307152807062a03cebb6a910cd2705310",
+				"dweb:/ipfs/QmWzYsR7aaFZpCdKdbeYdBW6f1ax3PHzBCEKgAfhcdNq62"
 			]
 		}
 	},

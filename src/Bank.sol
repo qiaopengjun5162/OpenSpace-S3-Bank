@@ -8,8 +8,6 @@ pragma solidity ^0.8.20;
     在 Bank 合约记录每个地址的存款金额
     编写 withdraw() 方法，仅管理员可以通过该方法提取资金。
     用数组记录存款金额的前 3 名用户
-    https://decert.me/challenge/c43324bc-0220-4e81-b533-668fa644c1c3
-    https://remix-ide.readthedocs.io/en/latest/remixd.html#remixd-command
 */
 
 contract Bank {
@@ -17,9 +15,7 @@ contract Bank {
     address public owner;
     // balances：mapping 类型，用于存储每个地址的存款金额。
     mapping(address => uint256) public balances;
-    // topDepositUsers 和 topDepositAmounts：分别用于记录存款金额前三名的用户地址和金额。
     address[3] public topDepositUsers;
-    uint256[3] public topDepositAmounts;
 
     // Deposit 事件，用于记录存款操作
     event Deposit(address indexed user, uint256 amount);
@@ -45,7 +41,7 @@ contract Bank {
         emit Deposit(msg.sender, msg.value);
 
         // 更新前三名存款用户
-        updateTopUsers(msg.sender, balances[msg.sender]);
+        updateTopUsers(msg.sender);
     }
 
     // Withdraw function (only owner can call)
@@ -63,21 +59,33 @@ contract Bank {
 
     // Internal function to update top deposit users
     // updateTopUsers()：内部函数，用于更新前三名存款用户的列表。
-    function updateTopUsers(address user, uint256 balance) internal {
-        // 遍历前三名存款金额的数组
-        for (uint256 i = 0; i < topDepositAmounts.length; i++) {
-            // 如果当前用户的存款金额大于当前数组中的存款金额
-            if (balance > topDepositAmounts[i]) {
-                // 将数组中的元素向下移动，为新的存款用户腾出位置
-                for (uint256 j = topDepositAmounts.length - 1; j > i; j--) {
-                    topDepositAmounts[j] = topDepositAmounts[j - 1];
-                    topDepositUsers[j] = topDepositUsers[j - 1];
+    function updateTopUsers(address user) internal {
+        uint256 userBalance = balances[user];
+
+        // 检查用户是否已经在前三名中
+        for (uint256 i = 0; i < topDepositUsers.length; i++) {
+            if (user == topDepositUsers[i]) {
+                sortTopUsers();
+                return;
+            }
+        }
+
+        // 如果用户不在前三名且当前存款大于第三名
+        if (userBalance > balances[topDepositUsers[2]]) {
+            topDepositUsers[2] = user;
+            sortTopUsers();
+        }
+    }
+
+    // Sort the top deposit users
+    function sortTopUsers() internal {
+        for (uint256 i = 0; i < topDepositUsers.length - 1; i++) {
+            for (uint256 j = i + 1; j < topDepositUsers.length; j++) {
+                if (balances[topDepositUsers[i]] < balances[topDepositUsers[j]]) {
+                    address tempUser = topDepositUsers[i];
+                    topDepositUsers[i] = topDepositUsers[j];
+                    topDepositUsers[j] = tempUser;
                 }
-                // 插入新的用户和其存款金额
-                topDepositAmounts[i] = balance;
-                topDepositUsers[i] = user;
-                // 插入完成后退出循环
-                break;
             }
         }
     }
@@ -89,7 +97,11 @@ contract Bank {
         view
         returns (address[3] memory, uint256[3] memory)
     {
-        return (topDepositUsers, topDepositAmounts);
+        uint256[3] memory topAmounts;
+        for (uint256 i = 0; i < topDepositUsers.length; i++) {
+            topAmounts[i] = balances[topDepositUsers[i]];
+        }
+        return (topDepositUsers, topAmounts);
     }
 
     // Fallback function to receive Ether
