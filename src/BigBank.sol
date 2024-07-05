@@ -24,7 +24,6 @@ contract BigBank is Bank {
 
     // 重写 withdraw 函数，使其只能由 newOwner 调用
     function withdraw(address user, uint256 amount) public override(Bank) {
-        
         require(msg.sender == owner, "Only new owner can call this function withdraw");
         super.withdraw(user, amount);
     }
