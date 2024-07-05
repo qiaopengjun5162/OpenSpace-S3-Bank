@@ -18,12 +18,18 @@ contract Ownable {
 
     // Modifier: Only owner
     modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner can call this function Ownable");
+        require(
+            msg.sender == owner,
+            "Only owner can call this function Ownable"
+        );
         _;
     }
 
     // Function to withdraw from BigBank (only owner can call)
-    function withdrawFromBigBank(address user, uint256 amount) public onlyOwner {
+    function withdrawFromBigBank(
+        address user,
+        uint256 amount
+    ) public onlyOwner {
         bigBank.withdraw(user, amount);
     }
 }

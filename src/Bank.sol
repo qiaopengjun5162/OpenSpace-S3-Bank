@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-
 // 定义 IBank 接口
 interface IBank {
     function withdraw(address user, uint256 amount) external;
@@ -74,7 +73,9 @@ contract Bank {
     function sortTopUsers() internal {
         for (uint256 i = 0; i < topDepositUsers.length - 1; i++) {
             for (uint256 j = i + 1; j < topDepositUsers.length; j++) {
-                if (balances[topDepositUsers[i]] < balances[topDepositUsers[j]]) {
+                if (
+                    balances[topDepositUsers[i]] < balances[topDepositUsers[j]]
+                ) {
                     address tempUser = topDepositUsers[i];
                     topDepositUsers[i] = topDepositUsers[j];
                     topDepositUsers[j] = tempUser;
