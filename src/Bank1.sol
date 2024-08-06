@@ -23,8 +23,8 @@ contract Bank {
     event Withdraw(address indexed user, uint256 amount);
 
     // 构造函数，设置合约所有者为部署者
-    constructor() {
-        owner = msg.sender;
+    constructor(address _owner) {
+        owner = _owner;
     }
 
     // Modifier: Only owner
