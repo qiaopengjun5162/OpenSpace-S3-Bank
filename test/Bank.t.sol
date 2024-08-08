@@ -80,8 +80,7 @@ contract BankTest is Test {
         vm.prank(addr3);
         bank.deposit{value: 3 ether}();
 
-        (address[3] memory topUsers, uint256[3] memory topAmounts) = bank
-            .getTopDepositUsers();
+        (address[3] memory topUsers, uint256[3] memory topAmounts) = bank.getTopDepositUsers();
         assertEq(topUsers[0], addr3);
         assertEq(topUsers[1], addr2);
         assertEq(topUsers[2], addr1);

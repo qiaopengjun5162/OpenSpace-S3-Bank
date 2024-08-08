@@ -48,10 +48,7 @@ contract Bank {
     // withdraw()：提款函数，只有合约所有者（管理员）可以调用，用于从合约中提取资金。
     function withdraw(address user, uint256 amount) external onlyOwner {
         require(amount > 0, "Withdraw amount must be greater than 0");
-        require(
-            amount <= address(this).balance,
-            "Insufficient contract balance"
-        );
+        require(amount <= address(this).balance, "Insufficient contract balance");
 
         payable(user).transfer(amount);
         emit Withdraw(user, amount);
@@ -81,9 +78,7 @@ contract Bank {
     function sortTopUsers() internal {
         for (uint256 i = 0; i < topDepositUsers.length - 1; i++) {
             for (uint256 j = i + 1; j < topDepositUsers.length; j++) {
-                if (
-                    balances[topDepositUsers[i]] < balances[topDepositUsers[j]]
-                ) {
+                if (balances[topDepositUsers[i]] < balances[topDepositUsers[j]]) {
                     address tempUser = topDepositUsers[i];
                     topDepositUsers[i] = topDepositUsers[j];
                     topDepositUsers[j] = tempUser;
@@ -94,11 +89,7 @@ contract Bank {
 
     // View function to get top deposit users and amounts
     // getTopDepositUsers()：查看函数，返回前三名存款用户和对应的存款金额数组。
-    function getTopDepositUsers()
-        external
-        view
-        returns (address[3] memory, uint256[3] memory)
-    {
+    function getTopDepositUsers() external view returns (address[3] memory, uint256[3] memory) {
         uint256[3] memory topAmounts;
         for (uint256 i = 0; i < topDepositUsers.length; i++) {
             topAmounts[i] = balances[topDepositUsers[i]];
